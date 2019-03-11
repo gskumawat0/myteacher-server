@@ -8,19 +8,41 @@ const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
+
+
+// CORS Middleware
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
+    next();
+}
+app.use(allowCrossDomain);
+
+// var corsOptions = {
+//   origin: 'https://d52890213a1f40e2b2295b1abe65ab4e.vfs.cloud9.ap-southeast-1.amazonaws.com:8081',
+//   // "origin": "*",
+//   "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   "preflightContinue": false,
+//   "optionsSuccessStatus": 204,
+//   "Access-Control-Allow-Origin": true
+// }
+// app.use(cors(corsOptions));
+
+
 // Connect To Database
-mongoose.connect(process.env.DATABASE_URL, { useMongoClient: true, useNewUrlParser: true  })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true  })
   .then(() => console.log(`Connected to database`))
   .catch((err) => console.log(`Database error: ${err.message}`));
 
 //load routes
 const userRoutes = require('./routes/auth');
+const questionRoutes = require("./routes/questions");
 
 //load models
 const User = require('./models/user');
 
-// CORS Middleware
-app.use(cors());
+
 
 //  Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -53,10 +75,11 @@ app.use(passport.session());
 
 
 app.use('/api/auth', userRoutes);
+app.use('/api/questions', questionRoutes);
 
 // Index Route
 app.get('/', (req, res) => {
-  res.send('send a post request to /api/auth/signup');
+  res.json({message: 'send a post request to /api/auth/signup'});
 });
 
 // Start Server
