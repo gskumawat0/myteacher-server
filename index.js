@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+// const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -10,7 +10,6 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
-    console.log('req received', 2345678);
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
@@ -78,7 +77,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', userRoutes);
-app.use('/api/questionset', questionRoutes);
+app.use('/api/questionpapers', questionRoutes);
 
 
 // Start Server
