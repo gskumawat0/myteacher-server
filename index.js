@@ -8,13 +8,9 @@ const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-app.use(function(req, res, next) {
-    console.log('req arrived');
-    next();
-})
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
-    console.log('req received');
+    console.log('req received', 2345678);
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
@@ -32,10 +28,10 @@ app.use(allowCrossDomain);
 
 
 // Connect To Database
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateIndex: true, })
     .then(() => console.log(`Connected to database`))
     .catch((err) => console.log(`Database error: ${err.message}`));
-
+mongoose.set('debug', true);
 //load routes
 const userRoutes = require('./routes/auth');
 const questionRoutes = require("./routes/questions");

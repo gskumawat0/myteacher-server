@@ -11,11 +11,10 @@ router.route('/')
 router.route('/:questionSetId')
     .get(getQuestionSetHandler);
 
+
 async function getHandler(req, res) {
     try {
-        console.log('a get request received');
         let questionSets = await Question.find({});
-
         return res.status(200).json({
             success: true,
             questionSets
@@ -30,13 +29,12 @@ async function getHandler(req, res) {
     }
 }
 
+
 //post handler for adding questions
 async function postHandler(req, res) {
     try {
-        console.log(req.body, 'a post requset received on post question');
         let questionSet = await Question.create(req.body)
-        console.log(questionSet)
-        return res.status(200).json({ success: true });
+        return res.status(200).json({ success: true, questionSet });
     }
     catch (err) {
         console.log(err);
@@ -50,7 +48,6 @@ async function postHandler(req, res) {
 //fetch a single question set
 async function getQuestionSetHandler(req, res) {
     try {
-        console.log('a req received on single question handler');
         let questionSet = await Question.findById(req.params.questionSetId);
         return res.status(200).json({
             success: true,
