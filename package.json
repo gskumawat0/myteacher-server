@@ -1,30 +1,37 @@
 {
-  "name": "myteacher-server",
-  "version": "1.0.0",
-  "description": "an application to help teachers create question papers and assign them to students",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gskumawat0/myteacher-server.git"
-  },
-  "keywords": [
-    "teachers",
-    "node.js"
-  ],
-  "author": "Gouri Shankar Kumawat <gskumawat555@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gskumawat0/myteacher-server/issues"
-  },
-  "homepage": "https://github.com/gskumawat0/myteacher-server#readme",
-  "dependencies": {
-    "express": "^4.16.4"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.10"
-  }
+    "name": "myteacher-server",
+    "version": "1.0.0",
+    "description": "an application to help teachers create question papers and assign them to students",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gskumawat0/myteacher-server.git"
+    },
+    "keywords": [
+        "teachers",
+        "node.js"
+    ],
+    "author": "Gouri Shankar Kumawat <gskumawat555@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/gskumawat0/myteacher-server/issues"
+    },
+    "homepage": "https://github.com/gskumawat0/myteacher-server#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.5",
+        "express": "^4.16.4",
+        "jsonwebtoken": "^8.5.0",
+        "mongoose": "^5.4.19",
+        "passport": "^0.4.0",
+        "passport-jwt": "^4.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.18.10"
+    }
 }
