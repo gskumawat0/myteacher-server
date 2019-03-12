@@ -7,7 +7,7 @@ let questionSchema = new mongoose.Schema({
     totalQuestions: Number,
     questions: [{
         question: String,
-        questionType: String,
+        answerType: String,
         options: [String],
         answers: [String]
     }]
