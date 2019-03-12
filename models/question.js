@@ -5,11 +5,11 @@ let questionSchema = new mongoose.Schema({
     subject: String,
     totalMarks: Number,
     totalQuestions: Number,
-    questionSet : [{
+    questions: [{
         question: String,
         questionType: String,
-        options: [{String}],
-        answer: [{String}]
+        options: [String],
+        answer: [String]
     }]
 })
 
