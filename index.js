@@ -8,27 +8,27 @@ const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-
-
+app.use(function(req, res, next) {
+    console.log('req arrived');
+    next();
+})
 // CORS Middleware
-// let allowCrossDomain = function(req, res, next) {
-//   console.log('req received');
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
-//     next();
-// }
-// app.use(allowCrossDomain);
-
-var corsOptions = {
-    "origin": '*',
-    credentials: true,
-    "methods": "GET,PUT,POST,DELETE",
-    "preflightContinue": false,
-    "optionsSuccessStatus": 204,
-    "Access-Control-Allow-Origin": '*'
+let allowCrossDomain = function(req, res, next) {
+    console.log('req received');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
+    next();
 }
-app.use(cors(corsOptions));
+app.use(allowCrossDomain);
+
+// const corsOptions = {
+//     "origin": '*',
+//     "methods": "GET,PUT,POST,DELETE",
+//     "preflightContinue": true,
+//     "Access-Control-Allow-Origin": '*'
+// }
+// app.use(cors(corsOptions));
 
 
 // Connect To Database
