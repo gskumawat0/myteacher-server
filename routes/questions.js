@@ -2,19 +2,20 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 
 //load models
-let Question = require("../models/question");
+let QuestionPaper = require("../models/question");
 
 router.route('/')
     .get(getHandler)
     .post(postHandler);
 
 router.route('/:questionPaperId')
-    .get(getQuestionSetHandler);
+    .get(getQuestionPaperHandler)
+    .delete(deleteQuestionPaperHandler)
 
 
 async function getHandler(req, res) {
     try {
-        let questionPapers = await Question.find({});
+        let questionPapers = await QuestionPaper.find({});
         return res.status(200).json({
             success: true,
             questionPapers
@@ -32,7 +33,7 @@ async function getHandler(req, res) {
 //post handler for adding questions
 async function postHandler(req, res) {
     try {
-        await Question.create(req.body);
+        await QuestionPaper.create(req.body);
         return res.status(200).json({ success: true });
     }
     catch (err) {
@@ -44,13 +45,26 @@ async function postHandler(req, res) {
 }
 
 //fetch a single question set
-async function getQuestionSetHandler(req, res) {
+async function getQuestionPaperHandler(req, res) {
     try {
-        let questionPaper = await Question.findById(req.params.questionPaperId);
+        let questionPaper = await QuestionPaper.findById(req.params.questionPaperId);
         return res.status(200).json({
             success: true,
             questionPaper
         })
+    }
+    catch (err) {
+        return res.json({
+            success: false,
+            message: err.message
+        });
+    }
+}
+
+async function deleteQuestionPaperHandler(req, res) {
+    try {
+        await QuestionPaper.findOneAndDelete({ _id: req.params.questionPaperId });
+        return res.json({ success: true });
     }
     catch (err) {
         return res.json({

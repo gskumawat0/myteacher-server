@@ -33,7 +33,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateInd
 mongoose.set('debug', true);
 //load routes
 const userRoutes = require('./routes/auth');
-const questionRoutes = require("./routes/questions");
+const questionPaperRoutes = require("./routes/questions");
 
 //load models
 const User = require('./models/user');
@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', userRoutes);
-app.use('/api/questionpapers', questionRoutes);
+app.use('/api/questionpapers', questionPaperRoutes);
 
 
 // Start Server
