@@ -2,11 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-<<<<<<< HEAD
-const cors = require('cors');
-=======
 // const cors = require('cors');
->>>>>>> 9b4313935013a9bdf9a3839438202648ae210769
 const passport = require('passport');
 const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -14,10 +10,6 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
-<<<<<<< HEAD
-    console.log('req received', 2345678);
-=======
->>>>>>> 9b4313935013a9bdf9a3839438202648ae210769
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
@@ -41,12 +33,9 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateInd
 mongoose.set('debug', true);
 //load routes
 const userRoutes = require('./routes/auth');
-<<<<<<< HEAD
 const questionRoutes = require("./routes/questions");
-=======
 const questionPaperRoutes = require("./routes/questions");
 const responseRoutes = require("./routes/responses");
->>>>>>> 9b4313935013a9bdf9a3839438202648ae210769
 
 //load models
 const User = require('./models/user');
@@ -86,21 +75,12 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 
 // Index Route
 app.get('/', (req, res) => {
-<<<<<<< HEAD
-    res.json({ message: 'send a post request to /api/auth/signup' });
-});
-
-app.use('/api/auth', userRoutes);
-app.use('/api/questionset', questionRoutes);
-
-=======
     res.json({ message: 'send a request to /api/questionpapers to get all questionpapers.' });
 });
 
 app.use('/api/auth', userRoutes);
 app.use('/api/questionpapers', questionPaperRoutes);
 app.use('/api/responses', responseRoutes);
->>>>>>> 9b4313935013a9bdf9a3839438202648ae210769
 
 // Start Server
 app.listen(process.env.PORT, () => {
