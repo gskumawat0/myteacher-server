@@ -10,6 +10,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
+    console.log(req.body, 233)
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
@@ -34,6 +35,7 @@ mongoose.set('debug', true);
 //load routes
 const userRoutes = require('./routes/auth');
 const questionPaperRoutes = require("./routes/questions");
+const responseRoutes = require("./routes/responses");
 
 //load models
 const User = require('./models/user');
@@ -78,7 +80,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', userRoutes);
 app.use('/api/questionpapers', questionPaperRoutes);
-
+app.use('/api/responses', responseRoutes);
 
 // Start Server
 app.listen(process.env.PORT, () => {
