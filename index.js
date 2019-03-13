@@ -10,7 +10,6 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
-    console.log(req.body, 233)
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
@@ -75,7 +74,7 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 
 // Index Route
 app.get('/', (req, res) => {
-    res.json({ message: 'send a post request to /api/auth/signup' });
+    res.json({ message: 'send a request to /api/questionpapers to get all questionpapers.' });
 });
 
 app.use('/api/auth', userRoutes);

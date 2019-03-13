@@ -26,7 +26,6 @@ async function getResponseHandler(req, res) {
 
 async function postResponseHandler(req, res) {
     try {
-        console.log(req.body, 11, req.body.answers, 22, req.body.amswers[0])
         let response = await Response.create(req.body);
         console.log(response);
         return res.json({
@@ -36,6 +35,7 @@ async function postResponseHandler(req, res) {
     }
     catch (err) {
         return res.json({
+            body: req.body,
             success: false,
             message: err.message
         })
