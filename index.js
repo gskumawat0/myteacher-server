@@ -2,11 +2,13 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+
 // const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+
 
 // CORS Middleware
 let allowCrossDomain = function(req, res, next) {
@@ -37,9 +39,9 @@ const questionRoutes = require("./routes/questions");
 const questionPaperRoutes = require("./routes/questions");
 const responseRoutes = require("./routes/responses");
 
+
 //load models
 const User = require('./models/user');
-
 
 
 //  Static Folder
@@ -54,23 +56,25 @@ app.use(passport.session());
 
 // const config = require('../config/database');
 
-let opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = process.env.JWT_SECRET;
-passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findOne({ id: jwt_payload.data._id }, function(err, user) {
+
+  let opts = {};
+  opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+  opts.secretOrKey = process.env.JWT_SECRET;
+  passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    User.findOne({id: jwt_payload.data._id}, function(err, user) {
+
         if (err) {
             return done(err, false);
         }
         if (user) {
             return done(null, user);
-        }
-        else {
+        } else {
             return done(null, false);
             // or you could create a new account
         }
     });
 }));
+
 
 
 // Index Route
