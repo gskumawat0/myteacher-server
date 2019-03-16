@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
+
 // const cors = require('cors');
+
 const passport = require('passport');
 const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -31,6 +33,7 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateInd
     .then(() => console.log(`Connected to database`))
     .catch((err) => console.log(`Database error: ${err.message}`));
 mongoose.set('debug', true);
+
 //load routes
 const userRoutes = require('./routes/auth');
 const questionRoutes = require("./routes/questions");
@@ -39,7 +42,6 @@ const responseRoutes = require("./routes/responses");
 
 //load models
 const User = require('./models/user');
-
 
 
 //  Static Folder
@@ -64,6 +66,7 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
         }
         if (user) {
             return done(null, user);
+
         }
         else {
             return done(null, false);
