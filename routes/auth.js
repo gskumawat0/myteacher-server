@@ -6,9 +6,11 @@ const User = require('../models/user');
 
 // signup
 router.post('/signup', (req, res, next) => {
+    let {email, password, profileType} = req.body
     let newUser = new User({
-        email: req.body.email,
-        password: req.body.password
+        email,
+        password,
+        profileType
     });
 
     User.addUser(newUser, (err, user) => {
@@ -23,6 +25,7 @@ router.post('/signup', (req, res, next) => {
 
 // Authenticate
 router.post('/signin', (req, res, next) => {
+  console.log(req.body)
     const email = req.body.email;
     const password = req.body.password;
 
@@ -44,7 +47,8 @@ router.post('/signin', (req, res, next) => {
                     token: `Bearer ${token}`,
                     user: {
                         id: user._id,
-                        email: user.email
+                        email: user.email,
+                        profileType: user.profileType
                     }
                 });
             }

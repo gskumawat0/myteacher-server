@@ -26,6 +26,7 @@ async function getResponseHandler(req, res) {
 
 async function postResponseHandler(req, res) {
     try {
+        console.log(req.body);
         let response = await Response.create(req.body);
         console.log(response);
         return res.json({

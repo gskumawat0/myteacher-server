@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-
+const passport = require('passport');
 //load models
 let QuestionPaper = require("../models/question");
+
+//auth middleware
+router.use(passport.authenticate('jwt', { session: false }))
 
 router.route('/')
     .get(getHandler)
@@ -12,6 +15,10 @@ router.route('/:questionPaperId')
     .get(getQuestionPaperHandler)
     .delete(deleteQuestionPaperHandler)
 
+
+router.get('/profile',  (req, res, next) => {
+    res.json({ user: req.user });
+});
 
 async function getHandler(req, res) {
     try {
