@@ -33,6 +33,7 @@ app.use(allowCrossDomain);
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateIndex: true, })
     .then(() => console.log(`Connected to database`))
     .catch((err) => console.log(`Database error: ${err.message}`));
+
 mongoose.set('debug', true);
 
 //load routes

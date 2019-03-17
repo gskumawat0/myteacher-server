@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 // Register
 router.post('/signup', (req, res, next) => {
-    let {email, password, profileType} = req.body
+    let { email, password, profileType } = req.body
     let newUser = new User({
         email,
         password,
@@ -16,19 +16,18 @@ router.post('/signup', (req, res, next) => {
 
     User.addUser(newUser, (err, user) => {
         if (err) {
-            res.json({ success: false, message: 'Failed to register user' });
+            console.log(err)
+            res.json({ success: false, message: `${err.message}` });
         }
         else {
-            res.json({ success: true, message: 'User registered' });
+            res.json({ success: true, message: `User registered. please signin <a href='/auth/signin'>here</a>` });
         }
     });
 });
 
 // Authenticate
 router.post('/signin', (req, res, next) => {
-  console.log(req.body)
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body.email;
 
     User.getUserByEmail(email, (err, user) => {
         if (err) throw err;
@@ -49,7 +48,8 @@ router.post('/signin', (req, res, next) => {
                     user: {
                         id: user._id,
                         email: user.email,
-                        profileType: user.profileType
+                        profileType: user.profileType,
+                        message: `welcome back!! ${user.email}`
                     }
                 });
             }
