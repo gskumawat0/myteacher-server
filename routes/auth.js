@@ -27,7 +27,7 @@ router.post('/signup', (req, res, next) => {
 
 // Authenticate
 router.post('/signin', (req, res, next) => {
-    const { email, password } = req.body.email;
+    const { email, password } = req.body;
 
     User.getUserByEmail(email, (err, user) => {
         if (err) throw err;
