@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
-// const cors = require('cors');
+const cors = require('cors');
 
 const passport = require('passport');
 const mongoose = require('mongoose');
@@ -12,21 +12,23 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 
 // CORS Middleware
-let allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Content-Type, Accept"');
-    next();
-}
-app.use(allowCrossDomain);
-
-// const corsOptions = {
-//     "origin": '*',
-//     "methods": "GET,PUT,POST,DELETE",
-//     "preflightContinue": true,
-//     "Access-Control-Allow-Origin": '*'
+// let allowCrossDomain = function(req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*, https://d52890213a1f40e2b2295b1abe65ab4e.vfs.cloud9.ap-southeast-1.amazonaws.com');
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Authorization, Content-Type, Accept");
+//     next();
 // }
-// app.use(cors(corsOptions));
+// app.use(allowCrossDomain);
+
+const corsOptions = {
+    "origin": '*',
+    "methods": "GET,PUT,POST,DELETE",
+    "preflightContinue": false,
+    "Access-Control-Allow-Origin": '*'
+}
+app.use(cors());
+app.options('*', cors());
 
 
 // Connect To Database
@@ -64,6 +66,7 @@ let opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRET;
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    console.log(jwt_payload)
     User.findOne({ id: jwt_payload.data._id }, function(err, user) {
 
         if (err) {
