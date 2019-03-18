@@ -5,6 +5,8 @@ let questionSchema = new mongoose.Schema({
     subject: String,
     totalMarks: Number,
     totalQuestions: Number,
+    assignedTo: [String],
+    lastDate: Date,
     questions: [{
         question: String,
         answerType: String,

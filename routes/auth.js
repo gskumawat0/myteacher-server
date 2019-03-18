@@ -20,7 +20,7 @@ router.post('/signup', (req, res, next) => {
             res.json({ success: false, message: `${err.message}` });
         }
         else {
-            res.json({ success: true, message: `User registered. please signin <a href='/auth/signin'>here</a>` });
+            res.json({ success: true, message: `successfully registered. please signin at /auth/signin` });
         }
     });
 });
@@ -60,9 +60,5 @@ router.post('/signin', (req, res, next) => {
     });
 });
 
-// Profile
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.json({ user: req.user });
-});
 
 module.exports = router;

@@ -16,10 +16,6 @@ router.route('/:questionPaperId')
     .delete(deleteQuestionPaperHandler)
 
 
-router.get('/profile',  (req, res, next) => {
-    res.json({ user: req.user });
-});
-
 async function getHandler(req, res) {
     try {
         let questionPapers = await QuestionPaper.find({});
@@ -40,6 +36,7 @@ async function getHandler(req, res) {
 //post handler for adding questions
 async function postHandler(req, res) {
     try {
+        req.body.assignedTo = req.body.assignedTo.split(','); 
         await QuestionPaper.create(req.body);
         return res.status(200).json({ success: true });
     }

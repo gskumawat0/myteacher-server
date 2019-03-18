@@ -2,24 +2,12 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-
 const cors = require('cors');
 
 const passport = require('passport');
 const mongoose = require('mongoose');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-
-
-// CORS Middleware
-// let allowCrossDomain = function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*, https://d52890213a1f40e2b2295b1abe65ab4e.vfs.cloud9.ap-southeast-1.amazonaws.com');
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Authorization, Content-Type, Accept");
-//     next();
-// }
-// app.use(allowCrossDomain);
 
 const corsOptions = {
     "origin": '*',
@@ -36,13 +24,12 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useCreateInd
     .then(() => console.log(`Connected to database`))
     .catch((err) => console.log(`Database error: ${err.message}`));
 
-mongoose.set('debug', true);
+process.env.NODE_ENV === 'development'&& mongoose.set('debug', true);
 
 //load routes
 const userRoutes = require('./routes/auth');
-const questionRoutes = require("./routes/questions");
-const questionPaperRoutes = require("./routes/questions");
-const responseRoutes = require("./routes/responses");
+const teacherRoutes = require("./routes/teachers");
+const responseRoutes = require("./routes/students");
 
 
 //load models
@@ -58,17 +45,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-// const config = require('../config/database');
-
-
 let opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.JWT_SECRET;
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    console.log(jwt_payload)
-    User.findOne({ id: jwt_payload.data._id }, function(err, user) {
-
+    User.findOne({ email: jwt_payload.data.email },{password: 0}, function(err, user) {
         if (err) {
             return done(err, false);
         }
@@ -90,7 +71,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', userRoutes);
-app.use('/api/questionpapers', questionPaperRoutes);
+app.use('/api/questionpapers', teacherRoutes);
 app.use('/api/responses', responseRoutes);
 
 // Start Server

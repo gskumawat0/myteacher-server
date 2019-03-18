@@ -16,7 +16,14 @@ const UserSchema = new mongoose.Schema({
     profileType: {
         type: String,
         required: true
-    }
+    },
+    submittedAnswers: [{
+        answerId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Response"
+        },
+        submittedOn: {type: Date}
+    }]
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
