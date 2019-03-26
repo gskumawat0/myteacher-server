@@ -12,7 +12,7 @@ let questionSchema = new mongoose.Schema({
         answerType: String,
         options: [String],
         answers: [String]
-    }]
+    }],
 })
 
 
