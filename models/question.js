@@ -7,6 +7,7 @@ let questionSchema = new mongoose.Schema({
     totalQuestions: Number,
     assignedTo: [String],
     lastDate: Date,
+    responsedBy: [String],
     questions: [{
         question: String,
         answerType: String,
