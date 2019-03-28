@@ -15,8 +15,8 @@ router.route('/')
 
 async function getHandler(req, res) {
     try {
-        let questionPapers = await QuestionPaper.find({lastDate: {$gt: Date.now()},assignedTo: {$in: [req.user.email, '']}, responsedBy: {$nin: [req.user.email]} }, {'questions.answers': 0});
-        return res.status(200).json({
+        let questionPapers = await QuestionPaper.find({lastDate: {$gt: Date.now()}, assignedTo: {$in: [req.user.email, '']}, responsedBy: {$nin: [req.user.email]} }, {'questions.answers': 0});
+        return res.json({
             success: true,
             questionPapers
         })
@@ -33,9 +33,9 @@ async function getHandler(req, res) {
 //post handler for adding questions
 async function postHandler(req, res) {
     try {
-        if(req.user.profileType === 'teacher') throw Error('only students can submit answers')
+        if(req.user.profileType !== 'student') throw Error('you are not allowed to submit it')
         let {responses, questionPaperId} = req.body; 
-        let questionPaper = await QuestionPaper.findByIdAndUpdate(questionPaperId,{$set:{$push: {responsedBy: req.user.email}}},{new: true},{standard: 0, lastDate: 0, subject: 0, assignedTo: 0 } );
+        let questionPaper = await QuestionPaper.findOneAndUpdate({_id:questionPaperId}, {$push: {responsedBy: req.user.email}}, {new : true} );
         let score = 0;
         let marksPerQuestion = questionPaper.totalMarks/ questionPaper.totalQuestions;
         for(key in responses){
@@ -51,7 +51,8 @@ async function postHandler(req, res) {
         responses = await Response.create(req.body);
         req.user.submittedAnswers.push({
             answerId: responses._id,
-            submittedOn: Date.now()
+            submittedOn: Date.now(),
+            questionPaperId
         })
         req.user.save();
         return res.json({ success: true });

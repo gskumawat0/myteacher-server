@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Response"
         },
+        questionPaperId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "QuestionPaper"
+        },
         submittedOn: {type: Date}
     }]
 });
