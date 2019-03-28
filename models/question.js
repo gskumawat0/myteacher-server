@@ -8,6 +8,12 @@ let questionSchema = new mongoose.Schema({
     assignedTo: [String],
     lastDate: Date,
     responsedBy: [String],
+    createdBy: {
+        id:{type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        email: String
+    },
     questions: [{
         question: String,
         answerType: String,

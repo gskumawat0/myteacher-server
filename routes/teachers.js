@@ -4,6 +4,7 @@ const passport = require('passport');
 //load models
 let QuestionPaper = require("../models/question");
 let Response = require("../models/response");
+let User = require("../models/user");
 
 //auth middleware
 router.use(passport.authenticate('jwt', { session: false }))
@@ -21,8 +22,8 @@ router.route('/:questionPaperId/scores')
 
 async function getHandler(req, res) {
     try {
-        let questionPapers = await QuestionPaper.find({}, {'questions.answers': 0});
-        return res.status(200).json({
+        let questionPapers = await QuestionPaper.find({'createdBy.id': req.user._id}, {'questions.answers': 0});
+        return res.json({
             success: true,
             questionPapers
         })
@@ -39,9 +40,14 @@ async function getHandler(req, res) {
 //post handler for adding questions
 async function postHandler(req, res) {
     try {
-        req.body.assignedTo = req.body.assignedTo.split(','); 
+        if(req.user.profileType !== 'teacher') throw Error('you are unauthorized to submit a question paper.');
+        req.body.assignedTo = req.body.assignedTo.trim().split(',').map(email=>email.trim());
+        req.body.createdBy = {
+            id: req.user._id,
+            email: req.user.email
+        }
         await QuestionPaper.create(req.body);
-        return res.status(200).json({ success: true });
+        return res.json({ success: true });
     }
     catch (err) {
         return res.json({
@@ -55,6 +61,7 @@ async function postHandler(req, res) {
 async function getQuestionPaperHandler(req, res) {
     try {
         let questionPaper = await QuestionPaper.findById(req.params.questionPaperId, {'questions.answers': 0});
+        questionPaper.questions.sort((a,b)=>0.5 - Math.random());
         return res.status(200).json({
             success: true,
             questionPaper
@@ -71,6 +78,8 @@ async function getQuestionPaperHandler(req, res) {
 async function deleteQuestionPaperHandler(req, res) {
     try {
         await QuestionPaper.findOneAndDelete({ _id: req.params.questionPaperId });
+        Response.deleteMany({questionPaperId: req.params.questionPaperId});
+        User.updateMany({'submittedAnswers.questionPaperId': req.params.questionPaperId},{$pull:{'submittedAnswers.questionPaperId': req.params.questionPaperId}});
         return res.json({ success: true });
     }
     catch (err) {
