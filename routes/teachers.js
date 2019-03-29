@@ -16,6 +16,7 @@ router.route('/')
 
 router.route('/:questionPaperId')
     .get(getQuestionPaperHandler)
+    .put(studentAssignmentHandler)
     .delete(deleteQuestionPaperHandler)
 
 router.route('/:questionPaperId/scores')
@@ -63,12 +64,29 @@ async function getQuestionPaperHandler(req, res) {
     try {
         let questionPaper = await QuestionPaper.findById(req.params.questionPaperId, {'questions.answers': 0});
         questionPaper.questions.sort((a,b)=>0.5 - Math.random());
-        return res.status(200).json({
+        return res.json({
             success: true,
             questionPaper
         })
     }
     catch (err) {
+        return res.json({
+            success: false,
+            message: err.message
+        });
+    }
+}
+
+async function studentAssignmentHandler(req, res){
+    try{
+        let assignedTo = req.body.assignedTo.trim().split(',').map(email=>email.trim());
+        let questionPaper = await QuestionPaper.findOneAndUpdate({_id: req.params.questionPaperId}, {$set: {assignedTo }});
+        console.log(questionPaper)
+        res.json({
+            success: true
+        })
+    }
+    catch(err){
         return res.json({
             success: false,
             message: err.message
